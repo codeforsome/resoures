@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="admin_top_header" class="header-wrap">
+    <header>
+        <div class="box">
+            <div class="header-left">
+                <img class="logo_img" th:src="@{/images/logo.png}" alt="">
+                <a th:href="@{/admin/index/}"><h1 class="logo_title">养生</h1></a>
+
+            </div>
+            <div  class="category header-nav">
+                <ul>
+                    <li><a th:href="@{/admin/userinfo/}">用户管理</a></li>
+                    <li><a th:href="@{/admin/article/category}">文章分类管理</a></li>
+                    <li><a th:href="@{/admin/article/show}">文章管理</a></li>
+                </ul>
+            </div>
+            <div class="header-right">
+                <!--<input class="search" placeholder="搜索" type="text">-->
+                <div class="user_status">
+                    <a th:href="@{/admin/index/loginout}">退出登陆</a>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
+</html>

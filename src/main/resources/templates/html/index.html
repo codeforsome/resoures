@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <link th:href="@{/css/index_header.css}" rel="stylesheet">
+    <style>
+      /*  * {margin:0; padding:0;}*/
+        .rcorner {
+            border-radius: 15px;
+            padding: 10px;
+            margin:auto;
+            width: 400px;/* margin-left: 10px;*/
+            height: 238px;
+            background-color: #f2f2f2;
+        }
+      a{
+          color: black;
+      }
+        .navigation {
+            border-radius: 35px;
+            padding: 2px;
+            width: 400px;
+            height: 32px;
+            background-color: #ffffff;
+        }
+        .button  {
+            padding: 3px 11px;
+            background: #fff;
+            border: 1px solid #b1b1b1;
+            border-radius: 15px;
+            margin-right: 5px;
+            float: left;
+            margin-top: 10px;
+
+        }
+        .article-show a{
+           float: left;
+        }
+        .rpage img {
+            padding-top:3px;
+            padding-left: 15px ;
+            margin-bottom:-5px;
+        }
+       .rpage a{text-decoration:none;}/*去掉a标签的下划线*/
+      .rpage a:visited{color: #07793e}
+      .rpage a:hover {color: #547cff;}
+        .rpage a.s2:visited{
+            color: black}
+        .rpage a.s2:hover {
+            color: #ffdb07;}
+        #myImg:hover {opacity: 0.3;}/*图片移动到那的相应*/
+        .rpage ul li{
+            list-style-type:none;
+            font-size:16px;
+            padding-left:20px;
+            padding-top:8px;
+        }
+
+
+        .content-img-wrap img{
+            width: 200px;
+            height: 180px;
+            margin-right:10px;
+            /*max-width: 450px;*/
+            /*max-height: 450px;*/
+        }
+        .article-show {
+            display: flex;
+            margin: 10px 0;
+        }
+        .article-title{
+            margin-bottom: 10px;
+        }
+
+        .article-title a{
+            color: #00aced;
+
+        }
+    </style>
+</head>
+<body>
+
+<div  class="header-wrap">
+    <div class="show" >
+        <p>匠心独运行，绿意传情</p>
+        <a href="#">查看详情</a>
+    </div>
+    <header>
+        <div class="box">
+            <div class="header-left">
+                <img class="logo_img" th:src="@{/images/logo.png}" alt="">
+                <a th:href="@{/index}"><h1 class="logo_title">养生</h1></a>
+
+            </div>
+            <nav class="header-nav">
+                <ul >
+                    <li th:each="item : ${categoryList}">
+                        <a th:href="'/article/category/'+${item.id}" th:class="${item.id}" th:text=" ${item.categoryName }"></a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <input class="search" placeholder="搜索" type="text">
+                <div class="user_status">
+                    <a th:if="${isLogin==true}" th:href="@{'/user/'+${id}+'/myinfo'}">
+                        <img  height="40px" width="40px"  th:src="@{/images/28.jpg}" alt="">
+                    </a>
+                    <a th:if="${isLogin==true}"  th:href="@{'user/'+${id}+'/myinfo'}">我的</a>
+                    <a th:if="${isLogin!=true}" class="login" href="/login">点我登陆</a>
+                    <a th:if="${isLogin==true}" class="login-out" href="login_out">退出登陆</a>
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <div class="content">
+
+        <ul class="imgs-show">
+            <li class="selected"> <a href="#"><img th:src="@{/images/bg_02.jpg}" alt=""></a></li>
+            <li> <a href="#"><img th:src="@{/images/bg_01.jpg}" alt=""></a></li>
+            <li> <a href="#"><img th:src="@{/images/bg_03.jpg}" alt=""></a></li>
+            <li> <a href="#"><img th:src="@{/images/bg_04.jpg}" alt=""></a></li>
+            <li> <a href="#"><img th:src="@{/images/bg_05.jpg}" alt=""></a></li>
+        </ul>
+        <ul class="clrcil-show">
+            <li  class="selected-clrcil"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</div>
+
+
+<div id="container" style="width: 80%;margin: 10px auto">
+    <div id="lpage" style="background-color:white;height:71.61%;width:54.8%;float:left;">
+        <!--热门推荐头部-->
+        <div id="header" style="background-color:white;">
+            <h3 id="id_olivefont"><strong>热门推荐</strong>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a target="_blank" href="http://www.ttys5.com/xinwen/xinwenhangye/2018-05-15/154049.html">
+                    <i class="icons font-2xl  mt-5 cui-options"></i></a></h3>
+            <hr width="82%" align="left">
+        </div>
+
+
+            <div class="article-show" th:each="item,itemStat : ${articleList}">
+                <a  th:href="@{'/article/'+${item.id} }">
+                <div class="content-img-wrap" >
+                     <img  th:src="${contentImageArray[itemStat.index]}">
+                </div>
+                </a>
+
+                <!--图片右部内容-->
+                <div id="content1" >
+                <div  class="article-title">
+                    <a th:href="@{'/article/'+${item.id} }" th:text=" ${item.title}"></a>
+                </div>
+                <img src="img/avatars/pTag.GIF" height="12%"width="8%">
+                <div th:text="${item.contentAbout}"></div>
+                <div align="right" th:text="${#calendars.format(item.createdAt,'yyyy-MM-dd')}"></div>
+                </div>
+            </div>
+
+    </div>
+
+    <div class="rpage" style="background-color:white;height:71.61%;width:43%;float:left;">
+        <div class="rcorner">
+            <div class="navigation" >
+                <img width="25"height="25" src="images/envelope.png"><a href="">&nbsp;养生速递</a>
+                <a class="s1" href=""> <img id="myImg" class="paddings" align="right" width="25"height="25"src="images/ellipsis.png"></a>
+            </div>
+            <ul th:each="item:${articleListNew}">
+                <li><a class="s2" th:href="'/article/'+${item.id}" th:text="${item.title}" ></a> </li>
+            </ul>
+        </div>
+        &nbsp;
+        <div class="rcorner">
+            <div class="navigation" >
+                <img width="25"height="25" src="images/pot.png"><a href="">&nbsp;养生功效</a>
+            </div>
+            <a class="button" style="color: #ff1906">减肥</a>
+            <a class="button" style="color: #ffdb07">丰胸</a>
+            <a class="button" style="color: #a0ff2f">降胆固醇</a>
+            <a class="button" style="color: #66a13d">美容</a>
+            <a class="button" style="color: #5e45a1">提高代谢</a>
+            <a class="button" style="color: #66a13d">减肥</a>
+            <a class="button" style="color: #ff1906">减肥</a>
+            <a class="button" style="color: #a0ff2f">减肥</a>
+            <a class="button" style="color: #ffdb07">美容</a>
+            <a class="button" style="color: #a0ff2f">提高代谢</a>
+            <a class="button" style="color: #66a13d">减肥</a>
+            <a class="button" style="color: #ffdb07">减肥萨达</a>
+            <a class="button" style="color: #a0ff2f">减肥</a>
+            <a class="button" style="color: #ff1906">减肥萨达</a>
+            <a class="button" style="color: #66a13d">减肥萨达</a>
+            <a class="button" style="color: #ff1906">萨达</a>
+            <a class="button" style="color: #ff1906">减肥</a>
+            <a class="button" style="color: #66a13d">美容</a>
+            <a class="button" style="color: #a0ff2f">提高代谢</a>
+            <a class="button" style="color: #ff1906">减肥</a>
+
+        </div>
+
+    </div>
+    </div>
+
+<div id="footer"style=" width: 100%; background-color: rgb(32, 88, 79)">
+    <div class="center" id="footer1" style="float: left;background-color: rgb(32, 88, 79);height:50%;width:50%">
+        <font color="white"size="2px"><center>Copyright@2018-11-19,www.youth.com版权所有@新用户满减</center> <center>未经许可，严禁复制</center></font>
+    </div>
+    <div id="footer2" style="background-color: rgb(32, 88, 79); height: 50%;width:50%;float: left" align="center">
+        <br>
+        <p>
+            <font color="white" size="3px">分享到:</font>&nbsp;&nbsp;&nbsp;&nbsp;
+            <img width="40" height="40" src="img/avatars/qq.jpg" >&nbsp;&nbsp;
+            <img  width="40" height="40" src="img/avatars/wechat.jpg">&nbsp;&nbsp;
+            <img  width="40" height="40" src="img/avatars/weibo.jpg">&nbsp;&nbsp;
+            <img  width="40" height="40" src="img/avatars/qzone.jpg">&nbsp;&nbsp;<img src="img/avatars/bzd.jpg">
+        </p>
+    </div>
+</div>
+</body>
+<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+<script>
+    var liList=$('.clrcil-show li');
+    var index=0;
+    var imgCount=5;
+    var nextIndex;
+
+    liList.click(function(event){
+        // 此方法没有参数的时候，返回值是指定元素在其同辈元素集合中的索引位置。
+        nextIndex=$(this).index();
+        var selectedImg= $('.imgs-show li');
+        var selectedClrcil=$('.clrcil-show li');
+        gotoImg(selectedImg,selectedClrcil,nextIndex);
+    });
+
+    $('.login-out-btn').click(function () {
+
+    })
+    function gotoImg(imgTarget,iconTarget,nextIndex){
+        imgTarget.eq(index).removeClass('selected').css('display','none');
+        iconTarget.eq(index).removeClass('selected-clrcil');
+        index=nextIndex;
+        targetAddClass(imgTarget,iconTarget);
+    }
+    function targetAddClass(imgTarget,iconTarget){
+        imgTarget.eq(index).css('display','block').addClass('selected');
+        iconTarget.eq(index).addClass('selected-clrcil');
+    }
+    setInterval(function(){
+        nextIndex=index+1;
+        var selectedImg= $('.imgs-show li');
+        var selectedClrcil=$('.clrcil-show li');
+        if(nextIndex>=imgCount){
+            nextIndex=0;
+        }
+        gotoImg(selectedImg,selectedClrcil,nextIndex);
+    },3000);
+</script>
+
+</body>
+</html>

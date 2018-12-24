@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文章编辑</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/ckeditor/ckeditor.js}"></script>
+    <script type="text/javascript">
+        //替换指定name的textarea为富文本编辑器
+        CKEDITOR.replace('edi')
+    </script>
+    <style>
+
+        .article-content{
+            width: 90%;
+            min-width: 600px;
+            margin: 10px auto;
+        }
+        .title-box{
+            margin: 10px 0;
+        }
+        .title-box .title{
+            height: 24px;
+        }
+        .category{
+         margin: 10px 0;
+        }
+        .multi-drop-menu {
+            font:1em helvetica, arial, sans-serif;
+            display:inline-block;
+            position: relative;
+        }
+       *{
+            margin:0;
+            padding:0;
+        }
+       ul{
+           list-style-type:none;
+       }
+       ul{
+           display: none;
+           position: absolute;
+           top:0;
+           left: 100%;
+           z-index: 1000;
+       }
+       ul>li{
+           width: 100px;
+       }
+       li{
+           cursor: pointer;
+           margin-bottom: 2px;
+       }
+        .multi-drop-menu li{
+            display:block;/*让链接充满列表项*/
+            color:#555;
+            background-color:#eee;
+            padding:.2em 1em;
+            border-width:3px;
+            border-color:transparent;/*透明颜色*/
+            border-right-style:solid;
+            /*背景只出现在内边距区域后面*/
+            background-clip:padding-box;
+            text-decoration: none;
+        }
+        .multi-drop-menu:hover >ul{
+            display: block;
+            color: #00aced;
+        }
+        .multi-drop-menu li:hover{
+            color: #00aced;
+        }
+        .multi-drop-menu>span{
+            padding:.2em 1em;
+            border-width:3px;
+            border-color:transparent;/*透明颜色*/
+            border-right-style:solid;
+            color:#555;
+            background-color:#eee;
+        }
+        .article-content-about{
+            display: flex;
+            margin:10px 0;
+        }
+        .article-content-about span{
+            display: inline-block;
+            height: 130px;
+            line-height: 24px;
+            margin-bottom: 100px;
+        }
+        .article-content-about textarea{
+            width:300px;
+            height: 130px;
+        }
+        .error-tip{
+            font-size: 22px;
+            color:red;
+        }
+        *{
+            margin:0;
+            padding:0;
+        }
+        ul{
+            list-style: none;
+        }
+        html,body{
+            height: 100%;
+            background-color: #efefef;
+        }
+        a{
+            text-decoration: none;
+            color:#fff;
+        }
+        a:hover{
+            color: rgb(32, 88, 79);
+        }
+        button{
+            margin: 0;
+            padding: 0;
+            border: 1px solid transparent;
+            outline: none;
+        }
+
+        input{
+            outline:none;
+            border: 1px solid #eee;
+            padding: 0 5px;
+        }
+
+
+        .header-nav>ul{
+            display: -webkit-flex;
+            display: flex;
+            height: 100%;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .header-nav>ul>li{
+            margin-right: 20px;
+        }
+
+
+        .content-wap{
+            width: 90%;
+            min-width: 700px;
+            margin:10px auto;
+        }
+        .my-article{
+            height: 100px;
+            padding: 10px 30px;
+            box-shadow:7px 4px 9px #888;
+            border-radius:10px 0 10px 0;
+        }
+        a{
+            color:black;
+        }
+    </style>
+</head>
+<body>
+<div th:include="/model/topheader :: topheader" class="header-wrap"></div>
+<div class="article-content">
+    <div  th:if="${isregist==true}" >
+        <div class="updata"></div>
+        <div class="error-tip"></div>
+        <div class="user-id" th:text="${id}"></div>
+        <div class="title-box">
+            <span>文章标题：</span>
+            <input class="title"  type="text" th:value="${article.title}">
+        </div>
+            <div th:if="${doctor==true}" class="category">
+                <span>文章分类选择：</span>
+                <nav  class="multi-drop-menu vertical">
+                    <div th:each="item : ${categoryList}">
+                        <span class="choice" data-index="1"  th:if="${item.id}==${article.categoryId}"   th:text="${item.categoryName}"></span>
+                    </div>
+                    <ul >
+                        <li th:each="item : ${categoryList}" th:class="${item.id}"  th:text=" ${item.categoryName }"></li>
+                    </ul>
+                </nav>
+            </div>
+            <div th:if="${doctor==false}" class="category">
+                <span>文章类型：</span>
+                <nav  class="multi-drop-menu vertical">
+                    <span class="choice" data-index="1">个人文章</span>
+                </nav>
+            </div>
+    <div class="article-content-about">
+        <span>文章简介：</span>
+        <textarea class="content-about-value"  type="text" placeholder="简介字数40-60" th:text="${article.contentAbout}"></textarea>
+    </div>
+    <div >
+        <div>
+            <textarea class="ckeditor"  cols="80"  rows="10" name="edi" th:utext="${articleContent.toString()}"></textarea>
+        </div>
+        <input class="submit" type="button" value="提交" />
+    </div>
+
+    </div>
+
+    <div th:if="${isregist!=true }">
+        <div class="error-tip"></div>
+        <div class="user-id" th:text="${id}"></div>
+        <div class="title-box">
+            <span>文章标题：</span>
+            <input class="title"  type="text">
+        </div>
+        <div th:if="${doctor==true}" class="category">
+            <span>文章分类选择：</span>
+            <nav  class="multi-drop-menu vertical">
+                <span class="choice" data-index="1" th:text="${categoryList.get(0).categoryName}"></span>
+                <ul >
+                    <li th:each="item : ${categoryList}" th:class="${item.id}"  th:text=" ${item.categoryName }"></li>
+                </ul>
+            </nav>
+        </div>
+        <div th:if="${doctor==false}" class="category">
+            <span>文章类型：</span>
+            <nav  class="multi-drop-menu vertical">
+                <span class="choice" data-index="1">个人文章</span>
+            </nav>
+        </div>
+        <div class="article-content-about">
+            <span>文章简介：</span>
+            <textarea class="content-about-value"  type="text" placeholder="简介字数低于60"></textarea>
+        </div>
+        <div >
+            <div>
+                <textarea class="ckeditor"  cols="80"  rows="10" name="edi"></textarea>
+            </div>
+            <input class="submit" type="button" value="提交" />
+        </div>
+    </div>
+</div>
+</body>
+<script th:src="@{/js/public/base.js}"></script>
+<script>
+    var list=document.querySelectorAll(".multi-drop-menu li");
+    var choiceValue=document.querySelector('.choice');
+    var title=document.querySelector(".title");
+    var userId=document.querySelector(".user-id");
+    var errorTip=document.querySelector(".error-tip");
+    var contentAboutValue=document.querySelector(".content-about-value");
+    var updataFlag=document.querySelector(".updata")==null? null :
+        document.querySelector(".updata").className;
+    for(var i=0;i<list.length;i++){
+        list[i].addEventListener("click",function (event) {
+          choiceValue.innerHTML=this.innerHTML;
+          choiceValue.setAttribute('data-index',this.className);
+        })
+    }
+
+    document.querySelector(".content-about-value").addEventListener("keyup",
+    function (evt) {
+        var $this =this,
+            _val = $this.value;
+        if (_val.length > 60) {
+            $this.value=_val.substring(0, 60);
+        }
+        // count = 100 - $this.val().length;
+        // $("#text-count").text(count);
+
+    })
+
+    // document.querySelector("#cke_26").addEventListener("click",function (evt) {
+    //    alert("aaa");
+    // });
+
+
+
+
+    document.querySelector("input.submit").addEventListener('click',function () {
+        var data_tc = CKEDITOR.instances["edi"].getData();
+        var article={};
+        article.title=title.value;
+        article.createdBy=userId.innerHTML;
+        article.content=data_tc;
+        article.contentAbout=contentAboutValue.value;
+        article.categoryId=parseInt(choiceValue.getAttribute("data-index"));
+        if(article.title==""){
+            errorTip.innerHTML="标题不能为空！";
+            return;
+        }
+        if(article.contentAbout==""){
+            errorTip.innerHTML="文章简介不能为空！";
+            return;
+        }
+        if(article.content==""){
+            errorTip.innerHTML="内容不能为空！";
+            return;
+        }
+        if(updataFlag=="updata"){
+            Ajax.post("updata",JSON.stringify(article),function (result) {
+                var data=JSON.parse(result);
+                if(data.success==true){
+                    window.location.href="/user/"+userId.innerHTML+"/myinfo";
+                }else {
+                    //
+                }
+            });
+        }else{
+            Ajax.post("edit/add",JSON.stringify(article),function (result) {
+                var data=JSON.parse(result);
+                if(data.success==true){
+                    window.location.href="/user/"+userId.innerHTML+"/myinfo";
+                }else {
+                    //
+                }
+            });
+
+        }
+
+
+    })
+
+</script>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div  th:fragment="topheader" >
+        <header>
+            <div class="box">
+                <div class="header-left">
+                    <img class="logo_img" th:src="@{/images/logo.png}" alt="">
+                    <a th:href="@{/index}"><h1 class="logo_title">养生</h1></a>
+
+                </div>
+                <!--<div class="header-center">-->
+                    <!--<div class="article-count">-->
+                        <!--<span>贡献</span>-->
+                        <!--<span>1</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="header-right">
+                    <input class="search" placeholder="搜索" type="text">
+                    <div class="user_status">
+                        <a th:href="@{'/user/'+${id}+'/edit'}">发表文章</a>
+                        <a  th:href="@{'/user/'+${id}+'/myinfo'}">
+                            <img  height="40px" width="40px"  th:src="@{/images/28.jpg}" alt="">
+                        </a>
+                        <a   th:href="@{'/user/'+${id}+'/myinfo'}">我的</a>
+                        <a  class="login-out" href="/login_out">退出登陆</a>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+    </div>
+</body>
+</html>

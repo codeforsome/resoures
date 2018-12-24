@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:v-bin="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>文章管理</title>
+    <!--<link th:href="@{/dist/vendors/@coreui/icons/css/coreui-icons.min.css}" rel="stylesheet">-->
+    <link th:href="@{/dist/vendors/flag-icon-css/css/flag-icon.min.css}" rel="stylesheet">
+    <link th:href="@{/dist/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/dist/vendors/simple-line-icons/css/simple-line-icons.css}" rel="stylesheet">
+    <link th:href="@{/dist/css/style.css}" rel="stylesheet">
+    <link th:href="@{/dist/vendors/pace-progress/css/pace.min.css}" rel="stylesheet">
+    <link th:href="@{/css/index_header.css}" rel="stylesheet">
+
+    <style>
+        p.result-tip{
+            color:red;
+        }
+        .header-wrap>header{
+            position: static;
+        }
+        input.search-input{
+            width: 220px;
+            height: 40px;
+            padding:5px 15px;
+            border-radius:20px;
+        }
+        .search-target{
+        }
+        .search-btn{
+            height: 40px;
+            padding: 0 10px;
+            background-color: #00aced;
+            color:white;
+            border: 0;
+        }
+        .search-tip{
+            color: red;
+            height: 40px;
+            line-height: 20px;
+        }
+        .title-link{
+            color: #00aced;
+        }
+    </style>
+
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed ">
+<div th:include="/model/admin_top_header :: admin_top_header" class="header-wrap"></div>
+
+<div class="app-body">
+    <main class="main">
+
+        <div class="modal fade show" id="primaryModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+            <div class="modal-dialog modal-primary" style="width:400px" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"> 分类信息修改</h4>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <!-- <div class="card-header">Example Form</div> -->
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                  <i >分类名：</i>
+                                </span>
+                                            </div>
+                                            <input class="form-control category_name"  type="text" placeholder="" name="username2" >
+                                        </div>
+                                    </div>
+                                    <p class="result-tip"></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">关闭</button>
+                        <button id="save"  data-index="" class="btn btn-primary" type="button">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade show" id="addCategory"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+            <div class="modal-dialog modal-primary" style="width:400px" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"> 分类添加</h4>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <!-- <div class="card-header">Example Form</div> -->
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                  <i >分类名：</i></span>
+                                            </div><input class="form-control username"  type="text" name="username2" ></div>
+                                    </div>
+                                    <p class="result-tip"></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">关闭</button>
+                        <button   data-index="" class="add-category-btn btn btn-primary" type="button">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade show" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-danger" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">删除文章</h4>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>你确定删除？</p>
+                        <p class="result-tip"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                        <button class="btn btn-danger delete-article" data-index="" type="button">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid"  id="article-table">
+            <div class="animated fadeIn">
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header ">
+                            <i class="fa fa-align-justify"></i> 文章表
+                            <button class="pull-right search-btn">搜索</button>
+                            <input class="pull-right search-input" placeholder="搜索文章标题" type="text">
+                            <span class="pull-right search-tip"></span>
+                            <!--<button class="m-1 add-category pull-right btn  btn-ghost-primary active" type="button" data-target="#addCategory" data-toggle="modal" ><i class="icon-plus icons "></i>&nbsp;&nbsp;分类添加</button>-->
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-responsive-sm table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>文章标题</th>
+                                    <th>作者</th>
+                                    <th>创建时间</th>
+                                    <th>所属文章分类</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in articleInfo">
+                                    <td> <a class="title-link" v-bind:href="item.article.id">{{item.article.title}}</a></td>
+                                    <td>{{item.createdBy}}</td>
+                                    <td>{{item.article.createdAt | formatDate}}</td>
+                                    <td>{{item.category}}</td>
+                                    <td>
+                                        <!--<button class="btn  btn-ghost-primary active" data-toggle="modal" data-target="#primaryModal" type="button"  aria-pressed="true"  v-bind:data-index="index">-->
+                                        <!--<i class="fa fa-edit fa-lg "></i>&nbsp;&nbsp;修改</button>-->
+                                        <button class=" btn  btn-ghost-danger  active"  data-toggle="modal" data-target="#dangerModal" type="button"
+                                                aria-pressed="true" v-bind:data-index="index">
+                                            <i class="fa fa-trash fa-lg "></i>&nbsp;&nbsp;删除</button>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <button class="page-link prev_page" href="#">上一页</button>
+                                </li>
+                                <li class="page-item active">
+                                    <button class="page-link" href="#">页数/{{page}}</button>
+                                </li>
+                                <li class="page-item">
+                                    <button class="page-link next_page" href="#">下一页</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+</div>
+<footer class="app-footer">
+    <div>
+        <a href="https://coreui.io">CoreUI</a>
+        <span>&copy; 2018 creativeLabs.</span>
+    </div>
+    <div class="ml-auto">
+        <span>Powered by</span>
+        <a href="https://coreui.io">CoreUI</a>
+    </div>
+</footer>
+<script th:src="@{/dist/vendors/jquery/js/jquery.min.js}"></script>
+<script th:src="@{/dist/vendors/popper.js/js/popper.min.js}"></script>
+<script th:src="@{/dist/vendors/bootstrap/js/bootstrap.min.js}"></script>
+<!--<script th:src="@{/dist/vendors/pace-progress/js/pace.min.js}"></script>-->
+<!--<script th:src="@{/dist/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js}"></script>-->
+<script th:src="@{/dist/js/vue.js}"></script>
+<script th:src="@{/js/public/base.js}"></script>
+<script>
+    function formatDate(time) {
+        var start='yyyy-mm-dd'.length;
+        var end='Thh:ss:mm'.length;
+        if(time==null) return;
+        var  result=time.toString().substring(0,start);
+        return result+' '+time.toString().substring(start+1,start+end);
+    };
+    var resultTip=$(".result-tip");
+    var articleInfo;
+    var articleTable=new Vue({
+        el:'#article-table',
+        data:{
+            articleInfo:articleInfo,
+            page:1,
+        },
+        methods:{
+        },
+        filters: {
+            formatDate(time) {
+                return formatDate(time);
+            }
+        },
+    });
+    var  currentPage=1,pageSize=10;
+    var url='get?currentPage='+currentPage+'&pageSize='+pageSize;
+    $.get(url, function(data) {
+        articleTable.articleInfo=articleInfo=data;
+    });
+
+    var searchTip=$('.search-tip');
+     var searchInput=$(".search-input");
+    $(".search-btn").on("click",function () {
+        searchTip.html("");
+        if(searchInput.val()=="")return;
+        $.get("search/?value="+searchInput.val(), function(data) {
+            if(data.success==true){
+                articleTable.articleInfo=articleInfo=data.data;
+            }else {
+                articleTable.articleInfo=articleInfo="";
+                searchTip.html(data.msg);
+            }
+        });
+    });
+
+    $('.prev_page').on('click',function () {
+        currentPage-=pageSize;
+        articleTable.page=parseInt(currentPage/pageSize)+1;
+        if(currentPage<=0){
+            currentPage=1;
+        }
+        var url='get/?currentPage='+currentPage+'&pageSize='+pageSize;
+        $.get(url, function(data) {
+            articleTable.articleInfo=articleInfo=data;
+        });
+    });
+
+    $('.next_page').on('click',function () {
+        if(articleTable.articleInfo.length==pageSize){
+            currentPage+=pageSize;
+        }
+        var url='get?currentPage='+currentPage+'&pageSize='+pageSize;
+        $.get(url, function(data) {
+            articleTable.articleInfo=articleInfo=data;
+            articleTable.page=parseInt(currentPage/pageSize)+1;
+        });
+    });
+
+
+
+    $('#dangerModal').on('show.bs.modal', function (e) {
+        resultTip.html('');
+        var targetIndex=e.relatedTarget.getAttribute('data-index');
+        $('button.delete-article').attr('data-index',targetIndex);
+    });
+
+    $('button.delete-article').on('click',function(){
+        var targetIndex=$('button.delete-article').attr('data-index');
+        var targetId=articleInfo[targetIndex].article.id;
+        $.ajax({
+            url: "delete",
+            type: "post",
+            contentType: "application/json; charset=utf-8",
+            data: targetId ,
+            success: function (data) {
+                if(data.success==true){
+                    resultTip.html(data.msg);
+                    var url='get?currentPage='+currentPage+'&pageSize='+pageSize;
+                    $.get(url, function(data) {
+                        articleTable.articleInfo=articleInfo=data;
+                    });
+                }else if(data.success==false){
+                    resultTip.html(data.msg)
+                }
+                setTimeout(function () {
+                    $('#dangerModal').modal('hide');
+                },1200);
+
+            },
+            error:function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>

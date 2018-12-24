@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>管理员登陆</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/loginmodel.css}">
+    <style type="text/css">
+
+
+    </style>
+</head>
+
+<body>
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-form-title" >
+                    <span class="login100-form-title-1">管 理 员 登 录</span>
+                </div>
+
+                <div  class=" login100-form validate-form">
+                    <div class="from_item wrap-input100 validate-input m-b-26" data-validate="用户名不能为空">
+                        <span class="label-input100">用户名</span>
+                        <input onKeyUp="value=value.replace(/[\W]/g,'')" class="input100 username" type="text" name="username" placeholder="用户名由数字和字母组合">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="from_item wrap-input100 validate-input m-b-18" data-validate="密码不能为空">
+                        <span class="label-input100">密码</span>
+                        <input onKeyUp="value=value.replace(/[\W]/g,'')" class="input100 password" type="password" name="password" placeholder="密码由数字和字母组合">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div  class="from_item from_bottom">
+                        <div class="container-login100-form-btn">
+                            <button class="login_btn login100-form-btn">登 录</button>
+                        </div>
+                    </div>
+
+                    <div  class="from_item error_tip">
+                        <p>
+                        </p>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/public/login_base.js}"></script>
+    <script th:src="@{/js/public/base.js}"></script>
+    <script th:src="@{/js/admin/admin_login.js}"></script>
+
+
+</body>
+
+</html>

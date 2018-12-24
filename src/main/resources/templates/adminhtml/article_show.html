@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/index_header.css}" rel="stylesheet">
+    <title>Title</title>
+    <style>
+        .article{
+            width: 900px;
+            margin: 10px auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .header-wrap>header{
+            position: static;
+        }
+        body{
+            background-attachment: fixed;
+            background-image: url("/images/bg_login.jpg");
+        }
+        .title{
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .created-time{
+            margin-top:15px;
+        }
+    </style>
+</head>
+<body>
+<div th:include="/model/admin_top_header :: admin_top_header" class="header-wrap"></div>
+
+<div class="article">
+    <div class="title" th:text="${article.title}"></div>
+    <div th:utext="${articleContent}"></div>
+    <div class="created-time">
+        <span>创建时间：</span>
+        <span  th:text="${article.createdAt}"></span>
+    </div>
+</div>
+</body>
+</html>

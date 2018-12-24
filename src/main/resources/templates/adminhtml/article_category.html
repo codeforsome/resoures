@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      >
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>文章分类管理</title>
+    <!--<link th:href="@{/dist/vendors/@coreui/icons/css/coreui-icons.min.css}" rel="stylesheet">-->
+    <link th:href="@{/dist/vendors/flag-icon-css/css/flag-icon.min.css}" rel="stylesheet">
+    <link th:href="@{/dist/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/dist/vendors/simple-line-icons/css/simple-line-icons.css}" rel="stylesheet">
+    <link th:href="@{/dist/css/style.css}" rel="stylesheet">
+    <link th:href="@{/dist/vendors/pace-progress/css/pace.min.css}" rel="stylesheet">
+    <link th:href="@{/css/index_header.css}" rel="stylesheet">
+
+    <style>
+
+
+        p.result-tip{
+            color:red;
+        }
+        .header-wrap>header{
+            position: static;
+        }
+    </style>
+
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed ">
+
+<div th:include="/model/admin_top_header :: admin_top_header" class="header-wrap"></div>
+
+
+<div class="app-body">
+    <main class="main">
+
+        <div class="modal fade show" id="primaryModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+            <div class="modal-dialog modal-primary" style="width:400px" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"> 分类信息修改</h4>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <!-- <div class="card-header">Example Form</div> -->
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                  <i >分类名：</i>
+                                </span>
+                                            </div>
+                                            <input class="form-control category_name"  type="text" placeholder="" name="username2" >
+                                        </div>
+                                    </div>
+                                    <p class="result-tip"></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">关闭</button>
+                        <button id="save"  data-index="" class="btn btn-primary" type="button">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade show" id="addCategory"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+            <div class="modal-dialog modal-primary" style="width:400px" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"> 分类添加</h4>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <!-- <div class="card-header">Example Form</div> -->
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                  <i >分类名：</i></span>
+                                 </div><input class="form-control username"  type="text" name="username2" ></div>
+                                    </div>
+                                    <p class="result-tip"></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">关闭</button>
+                        <button   data-index="" class="add-category-btn btn btn-primary" type="button">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade show" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-danger" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">删除用户</h4>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>你确定删除？</p>
+                        <p class="result-tip"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                        <button class="btn btn-danger delete-category" data-index="" type="button">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid"  id="category-able">
+            <div class="animated fadeIn">
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header ">
+                            <i class="fa fa-align-justify"></i> 文章分类表
+                            <span id="error-tip" style="margin-left:100px;color: red"></span>
+                            <button class="m-1 add-category pull-right btn  btn-ghost-primary active" type="button" data-target="#addCategory" data-toggle="modal" ><i class="icon-plus icons "></i>&nbsp;&nbsp;分类添加</button>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-responsive-sm table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>文章分类名</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in categoryList">
+                                    <td>{{item.categoryName}}</td>
+                                    <td><button class="btn  btn-ghost-primary active" data-toggle="modal" data-target="#primaryModal" type="button"  aria-pressed="true"  v-bind:data-index="index">
+                                        <i class="fa fa-edit fa-lg "></i>&nbsp;&nbsp;修改</button>
+                                        <button class=" btn  btn-ghost-danger  active"  data-toggle="modal" data-target="#dangerModal" type="button"
+                                                aria-pressed="true" v-bind:data-index="index">
+                                            <i class="fa fa-trash fa-lg "></i>&nbsp;&nbsp;删除</button>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+</div>
+<footer class="app-footer">
+    <div>
+        <a href="https://coreui.io">CoreUI</a>
+        <span>&copy; 2018 creativeLabs.</span>
+    </div>
+    <div class="ml-auto">
+        <span>Powered by</span>
+        <a href="https://coreui.io">CoreUI</a>
+    </div>
+</footer>
+<script th:src="@{/dist/vendors/jquery/js/jquery.min.js}"></script>
+<script th:src="@{/dist/vendors/popper.js/js/popper.min.js}"></script>
+<script th:src="@{/dist/vendors/bootstrap/js/bootstrap.min.js}"></script>
+<!--<script th:src="@{/dist/vendors/pace-progress/js/pace.min.js}"></script>-->
+<!--<script th:src="@{/dist/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js}"></script>-->
+<script th:src="@{/dist/js/vue.js}"></script>
+<script th:src="@{/js/public/base.js}"></script>
+<script>
+    var categoryList;
+    var resultTip=$('p.result-tip');
+    var category=new  Vue({
+        el:'#category-able',
+        data:{
+            categoryList:categoryList,
+        }
+    });
+    Ajax.get("category/data",function (data) {
+        category.categoryList=categoryList=JSON.parse(data)
+    })
+
+
+    $('#primaryModal').on('show.bs.modal', function (e) {
+        resultTip.html('');
+        var targetIndex=e.relatedTarget.getAttribute('data-index');
+        $('#save').attr('data-index',targetIndex);
+        $('#primaryModal input.category_name').val(categoryList[targetIndex].categoryName);
+    });
+
+    $('#addCategory').on('show.bs.modal', function (e) {
+        resultTip.html('');
+    });
+
+    $('button#save').on('click',function(){
+        if($('input.category_name').val()==""){
+            resultTip.html('输入不能为空');
+            return;
+        }else{
+            var targetIndex = $('#save').attr('data-index');
+            var temp=categoryList[targetIndex].categoryName;
+            categoryList[targetIndex].categoryName = $('input.category_name').val() + "";
+            $.ajax({
+                url: "category/update",
+                type: "post",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(categoryList[targetIndex]) ,
+                success: function (data) {
+                    if(data.success==false){
+                        resultTip.html(data.msg)
+                        categoryList[targetIndex].categoryName = temp;
+                        return;
+                    }else if(data.success==true){
+                        resultTip.html(data.msg);
+                    }
+                    setTimeout(function () {
+                        $('#primaryModal').modal('hide');
+                    },2000);
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+
+    $('#dangerModal').on('show.bs.modal', function (e) {
+        resultTip.html('');
+        var targetIndex=e.relatedTarget.getAttribute('data-index');
+        $('button.delete-category').attr('data-index',targetIndex);
+    });
+
+    $('button.delete-category').on('click',function(){
+        var targetIndex=$('button.delete-category').attr('data-index');
+        var targetId=categoryList[targetIndex].id;
+        $.ajax({
+            url: "category/delete",
+            type: "post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(targetId) ,
+            success: function (data) {
+                if(data.success==true){
+                    resultTip.html(data.msg);
+                    $.get("category/data", function(data) {
+                        category.categoryList=categoryList=data;
+                    });
+                }else if(data.success==false){
+                    resultTip.html(data.msg)
+                }
+                    setTimeout(function () {
+                    $('#dangerModal').modal('hide');
+                },2000);
+
+            },
+            error:function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+    $('button.add-category-btn').on('click',function(){
+        if($('#addCategory input.username').val()==""){
+            resultTip.html("输入不能为空");
+            return;
+        }else{
+            var temp={};
+            temp.categoryName = $('#addCategory input.username').val() + "";
+            $.ajax({
+                url: "category/insert",
+                type: "post",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(temp) ,
+                success: function (data) {
+                    if(data.success==true){
+                        resultTip.html(data.msg);
+                        $.get("category/data", function(data) {
+                            category.categoryList=categoryList=data;
+                        });
+                    }else if(data.success==false){
+                        resultTip.html(data.msg)
+                    }
+                    setTimeout(function () {
+                        $('#addCategory').modal('hide');
+                    },2000);
+
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+
+
+    // $("#addUserModal input.username").blur(function(){
+    //     if($('#addUserModal input.username').val()==""){
+    //         $('p.errorTiip').html('用户名不能为空！');
+    //         $('p.errorTiip').css('color','red');
+    //     }
+    // });
+
+
+
+</script>
+</body>
+</html>

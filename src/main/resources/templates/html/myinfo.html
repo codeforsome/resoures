@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--<link th:href="@{/dist/css/style.css}" rel="stylesheet">-->
+    <title>我的文章</title>
+   <style>
+       *{
+           margin:0;
+           padding:0;
+       }
+       ul{
+           list-style: none;
+       }
+       html,body{
+           height: 100%;
+           background-color: #efefef;
+       }
+       a{
+           text-decoration: none;
+           color:#fff;
+       }
+       a:hover{
+           color: rgb(32, 88, 79);
+       }
+       button{
+           margin: 0;
+           padding: 0;
+           border: 1px solid transparent;
+           outline: none;
+       }
+       /*a:visited{*/
+       /*color: #fff;*/
+       /*}*/
+       input{
+           outline:none;
+           border: 1px solid #eee;
+           padding: 0 5px;
+       }
+       .header-wrap{
+           width:100%;
+           /*position:relative;*/
+       }
+
+       .header-wrap>header{
+           /*position:absolute;*/
+           /*left: 0;*/
+           /*top:0;*/
+           width: 100%;
+           /*z-index: 10;*/
+           font-size: 20px;
+           background-color:rgba(52, 52, 52, 0.6);
+           /* opacity: 0.7; */
+       }
+       header>.box{
+           width: 90%;
+           color: rgb(255, 255, 255);
+           margin: 0 auto;
+           display: -webkit-flex;
+           display: flex;
+           justify-content: space-between;
+           padding:12px 0;
+       }
+       .header-left{
+           display: -webkit-flex;
+           display: flex;
+           justify-content: flex-start;
+       }
+       .logo_img{
+           margin-right: 20px;
+       }
+       .header-nav>ul{
+           display: -webkit-flex;
+           display: flex;
+           height: 100%;
+           justify-content: flex-start;
+           align-items: center;
+       }
+       .header-nav>ul>li{
+           margin-right: 20px;
+       }
+
+       .header-right{
+           display: -webkit-flex;
+           display: flex;
+           height: 100%;
+           justify-content: flex-start;
+           margin-top:10px;
+       }
+       .header-right>.search{
+           height: 30px;
+           border-radius: 15px;
+       }
+       .header-right>.user_status{
+           margin: 0 10px;
+           display: -webkit-flex;
+           display: flex;
+           height: 100%;
+           align-items: center;
+           justify-content: flex-start;
+       }
+       .header-right .login-out-btn{
+           margin-left:5px;
+           padding:5px;
+           border-radius:5px;
+       }
+       .user_status>a{
+           margin-left: 5px;
+       }
+
+    .content-wap{
+        width: 90%;
+        min-width: 700px;
+        margin:10px auto;
+    }
+       .my-article{
+           height: 100px;
+           padding: 10px 30px;
+           box-shadow:7px 4px 9px #888;
+           border-radius:10px 0 10px 0;
+       }
+a{
+    color:black;
+}
+   </style>
+</head>
+<body>
+<div th:include="/model/topheader :: topheader" class="header-wrap"></div>
+
+<div class="content-wap" >
+    <div class="my-article" th:each="item,itemStat: ${articleList}">
+        <a th:href="@{'/user/'+${id}+'/article/'+${item.id}+'/'}">
+        <div th:text="${item.title}">文章标题</div>
+        <div th:text="${item.createdAt}">时间</div>
+        </a>
+        <a th:href="@{'/user/'+${id}+'/edit/'+${item.id}+'/'}">修改</a>
+
+        <a th:href="@{'/user/'+${id}+'/delete/'+${item.id}+'/'}">删除</a>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/vue.js}"></script>
+<script th:src="@{/js/public/base.js}"></script>
+
+<script>
+
+</script>
+</body>
+</html>

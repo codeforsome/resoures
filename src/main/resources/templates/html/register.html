@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>注册</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/public/loginmodel.css}">
+
+</head>
+
+<body>
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-form-title" >
+                    <span class="login100-form-title-1">注 册</span>
+                </div>
+
+                <div class="login100-form validate-form">
+                    <div class="from_item wrap-input100 validate-input m-b-26" data-validate="用户名不能为空">
+                        <span class="label-input100">账号</span>
+                        <input onKeyUp="value=limit(value)"  class="username input100" type="text" name="username" placeholder="请输入用户名">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="from_item wrap-input100 validate-input m-b-18" data-validate="密码不能为空">
+                        <span class="label-input100">密码</span>
+                        <input onKeyUp="value=limit(value)" class="password input100" type="password" name="pass" placeholder="请输入密码">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="from_item from_bottom">
+                        <div class="container-login100-form-btn">
+                            <button class="register_btn login100-form-btn">注册账号</button>
+                        </div>
+                        <div class="container-login100-form-btn">
+                            <a href="/login">
+                                <button class="back_login_btn login100-form-btn back_btn">返回登陆</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div  class="error_tip">
+                        <p>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/public/base.js}"></script>
+    <script th:src="@{/js/register.js}"></script>
+    <script th:src="@{/js/public/login_base.js}"></script>
+</body>
+
+</html>
